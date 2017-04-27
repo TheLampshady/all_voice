@@ -1,12 +1,15 @@
+from models.user import AllVoiceUser
+
+
 class BaseRequest(object):
 
     @staticmethod
-    def get_skill(skill_class, event, logger=None):
+    def get_skill(skill_class, event, user=None):
         from alexa_skill import AlexaRequest
-        from google_home_skill import ApiAiRequest
+        from google_home_skill import GoogleHomeRequest
 
         if event.get("result"):
-            request_class = ApiAiRequest
+            request_class = GoogleHomeRequest
         elif event.get("request"):
             request_class = AlexaRequest
         else:
@@ -16,15 +19,15 @@ class BaseRequest(object):
             (request_class,),
             dict(skill_class.__dict__)
         )
-
-        return skill(event, logger)
+        return skill(event, user)
 
     def __init__(self, *args, **kwargs):
+        self.user = AllVoiceUser
         self.event = NotImplemented
         self.logger = NotImplemented
         self.parameters = NotImplemented
         self.attributes = NotImplemented
-        self.user = NotImplemented
+        self.user_id = NotImplemented
         self.intent_name = NotImplemented
 
     def build_response(self, speech, text, reprompt=None):

@@ -11,7 +11,7 @@ class TestSkillFactory(TestBaseIntent):
 
         class MockClass(BaseRequest): pass
 
-        skill = BaseRequest.get_skill(event, MockClass)
+        skill = BaseRequest.get_skill(MockClass, event)
 
         self.assertIn("convert_to_ssml", dir(skill), "Skill did not extent Alexa")
         self.assertNotIn("convert_to_ssml", dir(MockClass),
@@ -22,7 +22,7 @@ class TestSkillFactory(TestBaseIntent):
 
         class MockClass(BaseRequest): pass
 
-        skill = BaseRequest.get_skill(event, MockClass)
+        skill = BaseRequest.get_skill(MockClass, event)
 
         self.assertIn("DEFAULT_CONTEXT", dir(skill), "Skill did not extent Google")
         self.assertNotIn("DEFAULT_CONTEXT", dir(MockClass),
@@ -36,7 +36,7 @@ class TestSkillFactory(TestBaseIntent):
             def CancelIntent(self):
                 return super(type(self), self).CancelIntent()
 
-        response = BaseRequest.get_skill(event, MockClass).response()
+        response = BaseRequest.get_skill(MockClass, event).response()
 
         self.assertTrue(response.get("test"))
         cancel_mock.assert_called_once()

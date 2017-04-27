@@ -4,13 +4,15 @@ from base_skill import BaseRequest
 log = logging.getLogger(__name__)
 
 
-class ApiAiRequest(BaseRequest):
+class GoogleHomeRequest(BaseRequest):
 
     DEFAULT_CONTEXT = "default"
 
-    def __init__(self, event):
-        super(ApiAiRequest, self).__init__(event)
+    def __init__(self, event, user=None):
+        super(GoogleHomeRequest, self).__init__(event, user)
         self.event = event
+        if user:
+            self.user = user
         result = self.event.get('result', {})
         self.contexts = result.get("contexts", [])
 
@@ -19,9 +21,9 @@ class ApiAiRequest(BaseRequest):
         self.attributes = self.get_attributes(self.contexts)
 
         try:
-            self.user = self.event['originalRequest']['data']['user']['user_id']
+            self.user_id = self.event['originalRequest']['data']['user']['user_id']
         except (KeyError, TypeError) as e:
-            self.user = None
+            self.user_id = ""
 
     def get_attributes(self, contexts):
         for context in contexts:
@@ -54,6 +56,13 @@ class ApiAiRequest(BaseRequest):
         except Exception as e:
             log.exception(e)
             raise e
+
+    def log_error(self, error):
+        self.logger.log_error(self.user_id, error)
+
+    def get_error(self):
+        message = self.logger.get_error(self.user_id)
+        return message or "Nothing is wrong"
 
     def LaunchRequest(self):
         return self.build_response(

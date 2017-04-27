@@ -10,16 +10,17 @@ class AlexaRequest(BaseRequest):
 
     BREAK = " <break /> "
 
-    def __init__(self, event, storage=None):
-        super(AlexaRequest, self).__init__(event, storage)
+    def __init__(self, event, user=None):
+        super(AlexaRequest, self).__init__(event, user)
         self.event = event
-        self.storage = storage
+        if user:
+            self.user = user
         intent = self.event['request'].get('intent', {})
         session = self.event.get("session", {})
 
         self.parameters = self.slots_to_dict(intent.get("slots", {}))
         self.attributes = session.get("attributes", {})
-        self.user = self.event['session']['user']['userId']
+        self.user_id = self.event['session']['user']['userId']
         self.intent_name = intent.get('name')
 
         self.request_type = self.event['request'].get('type')
@@ -84,10 +85,10 @@ class AlexaRequest(BaseRequest):
         return 'intentType: {r}'.format(r=self.request_type)
 
     def log_error(self, error):
-        self.logger.log_error(self.user, error)
+        self.logger.log_error(self.user_id, error)
 
     def get_error(self):
-        message = self.logger.get_error(self.user)
+        message = self.logger.get_error(self.user_id)
         return message or "Nothing is wrong"
 
     def LaunchRequest(self):

@@ -4,7 +4,8 @@ from datetime import datetime
 
 class TestBaseIntent(unittest.TestCase):
 
-    def get_mock_alexa_event(self, intent=None, session_id="SessionId.uuid", attributes=None):
+    @staticmethod
+    def get_mock_alexa_event(intent=None, session_id="SessionId.uuid", attributes=None):
         mock_event = {
             "session": {
                 "sessionId": session_id,
@@ -37,7 +38,8 @@ class TestBaseIntent(unittest.TestCase):
 
         return mock_event
 
-    def get_mock_google_home_event(self, intent=None, session_id="SessionId.uuid", attributes=None):
+    @staticmethod
+    def get_mock_google_home_event(intent=None, session_id="SessionId.uuid", user_id="1", attributes=None):
         now = datetime.now().isoformat()
 
         original_request = {
@@ -49,7 +51,7 @@ class TestBaseIntent(unittest.TestCase):
                     "conversation_token": "[]"
                 },
                 "user": {
-                    "user_id": "cEyPV+AAbX5X8zmyZs696eBRgaCHbcvQgThXY+SLox4="
+                    "user_id": user_id
                 },
                 "surface": {
                     "capabilities": [
@@ -109,7 +111,6 @@ class TestBaseIntent(unittest.TestCase):
         }
 
         if intent:
-            mock_event["request"]["type"] = "IntentRequest"
             mock_event["result"]["action"] = intent
 
         if attributes:
