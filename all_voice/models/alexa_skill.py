@@ -1,6 +1,5 @@
 import logging
 from base_skill import BaseRequest
-from user import AllVoiceUser
 
 
 log = logging.getLogger(__name__)

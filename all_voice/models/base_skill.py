@@ -1,4 +1,4 @@
-from models.user import AllVoiceUser
+from all_voice.models.user import AllVoiceUser
 
 
 class BaseRequest(object):

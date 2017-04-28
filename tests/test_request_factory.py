@@ -1,7 +1,8 @@
 from mock import patch
+from all_voice.models import AlexaRequest, BaseRequest
+
+
 from tests.base import TestBaseIntent
-from models.base_skill import BaseRequest
-from models.alexa_skill import AlexaRequest
 
 
 class TestSkillFactory(TestBaseIntent):

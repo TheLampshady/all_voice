@@ -1,5 +1,6 @@
+from all_voice.models import AllVoiceUser
+
 from tests.base import TestBaseIntent
-from models.user import AllVoiceUser
 
 
 class TestUser(TestBaseIntent):

@@ -1,6 +1,6 @@
+from all_voice.models import AlexaRequest, AllVoiceUser
+
 from tests.base import TestBaseIntent
-from models.user import AllVoiceUser
-from models.alexa_skill import AlexaRequest
 
 
 class TestAlexa(TestBaseIntent):

@@ -1,6 +1,6 @@
+from all_voice.models import GoogleHomeRequest, AllVoiceUser
+
 from tests.base import TestBaseIntent
-from models.user import AllVoiceUser
-from models.google_home_skill import GoogleHomeRequest
 
 
 class TestGoogleHome(TestBaseIntent):
