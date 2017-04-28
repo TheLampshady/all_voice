@@ -12,7 +12,6 @@ setup(
                  'and API AI (Google Home)'),
     license='MIT',
     packages=find_packages(exclude=['tests']),
-    scripts=['django/bin/django-admin.py'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
