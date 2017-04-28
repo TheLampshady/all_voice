@@ -3,4 +3,4 @@
 Python package for handling requests from Alexa and Google Home.
 
 # Installation
-pip install https://github.com/TheLampshady/all_voice.git
+pip install git+https://github.com/TheLampshady/all_voice.git

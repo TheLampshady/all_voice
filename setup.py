@@ -1,4 +1,3 @@
-from os import path
 from setuptools import find_packages, setup
 
 EXCLUDE_FROM_PACKAGES = [
@@ -6,10 +5,6 @@ EXCLUDE_FROM_PACKAGES = [
 ]
 
 version = "0.1.0"
-
-here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
 
 setup(
     name='All Voice',
