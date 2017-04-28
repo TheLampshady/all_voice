@@ -1,7 +1,4 @@
-import os
-import sys
-from distutils.sysconfig import get_python_lib
-
+from os import path
 from setuptools import find_packages, setup
 
 EXCLUDE_FROM_PACKAGES = [
@@ -10,6 +7,9 @@ EXCLUDE_FROM_PACKAGES = [
 
 version = "0.1.0"
 
+here = path.abspath(path.dirname(__file__))
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='All Voice',
@@ -20,6 +20,8 @@ setup(
     description=('A Python library for handling requests from Alexa'
                  'and API AI (Google Home)'),
     license='MIT',
+    packages=find_packages(exclude=EXCLUDE_FROM_PACKAGES),
+    scripts=['django/bin/django-admin.py'],
     install_requires=[],
     classifiers=[
         'Development Status :: 3 - Alpha',
