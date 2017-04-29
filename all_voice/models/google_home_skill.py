@@ -43,7 +43,9 @@ class GoogleHomeRequest(BaseRequest):
         response = dict(
             speech=speech,
             displayText=text,
-            data={'slack': speech},
+            data={
+                'slack': {"text": speech}
+            },
             source='default-webhook',
             contextOut=self.attributes_to_context()
         )
