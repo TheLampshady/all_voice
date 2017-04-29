@@ -44,7 +44,7 @@ class GoogleHomeRequest(BaseRequest):
             speech=speech,
             displayText=text,
             data={'slack': text},
-            source='spare-change-webhook',
+            source='default-webhook',
             contextOut=self.attributes_to_context()
         )
         log.info(response)
