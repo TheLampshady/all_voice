@@ -42,7 +42,7 @@ class AlexaRequest(BaseRequest):
         return {key: value.get('value') for key, value in slots.iteritems()}
 
     def convert_to_ssml(self, value):
-        text = "<speak>%s</speak>" % value
+        text = "<speak>%s</speak>" % value.replace("&", "and")
         return text.replace(". ", self.BREAK).replace(", ", self.BREAK)
 
     def build_speechlet_response(self, title, response_text, reprompt_text=None):
