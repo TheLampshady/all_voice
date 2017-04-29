@@ -60,10 +60,10 @@ class GoogleHomeRequest(BaseRequest):
             raise e
 
     def log_error(self, error):
-        self.logger.log_error(self.user_id, error)
+        self.user.log_error(self.user_id, error)
 
     def get_error(self):
-        message = self.logger.get_error(self.user_id)
+        message = self.user.get_error(self.user_id)
         return message or "Nothing is wrong"
 
     def LaunchRequest(self):
