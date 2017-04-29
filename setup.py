@@ -1,9 +1,9 @@
 from setuptools import find_packages, setup
 
-version = "0.1.0"
+version = "0.1.1"
 
 setup(
-    name='All Voice',
+    name='all_voice',
     version=version,
     url='https://github.com/TheLampshady/all_voice',
     author='Lampshady',
