@@ -1,6 +1,6 @@
 from mock import patch
 from all_voice.models import AlexaSkill
-from all_voice.models.all_voice import AllVoice
+from all_voice.models.all_skill import AllVoice
 
 from tests.base import TestBaseIntent
 
