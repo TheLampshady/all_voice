@@ -1,25 +1,7 @@
-from all_voice.models.user import AllVoiceUser
+from user import AllVoiceUser
 
 
-class BaseRequest(object):
-
-    @staticmethod
-    def get_skill(skill_class, event, user=None):
-        from alexa_skill import AlexaRequest
-        from google_home_skill import GoogleHomeRequest
-
-        if event.get("result"):
-            request_class = GoogleHomeRequest
-        elif event.get("request"):
-            request_class = AlexaRequest
-        else:
-            raise ValueError("Unknown Request Type")
-        skill = type(
-            'Skill',
-            (request_class,),
-            dict(skill_class.__dict__)
-        )
-        return skill(event, user)
+class BaseSkill(object):
 
     def __init__(self, *args, **kwargs):
         self.user = AllVoiceUser

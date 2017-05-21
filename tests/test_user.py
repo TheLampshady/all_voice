@@ -1,5 +1,5 @@
+from time import sleep
 from all_voice.models import AllVoiceUser
-
 from tests.base import TestBaseIntent
 
 
@@ -23,8 +23,10 @@ class TestUser(TestBaseIntent):
     def test_reduce_database(self):
         message = "Error"
         for x in range(0, AllVoiceUser._db_limit+5):
+            sleep(.001)
             AllVoiceUser.log_error(x, message)
         for x in range(4, -1, -1):
+            sleep(.001)
             AllVoiceUser.log_error(x, message)
 
         self.assertEqual(len(AllVoiceUser._database), AllVoiceUser._db_limit)

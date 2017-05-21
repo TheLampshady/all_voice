@@ -1,16 +1,16 @@
 import logging
-from base_skill import BaseRequest
+from base_skill import BaseSkill
 
 
 log = logging.getLogger(__name__)
 
 
-class AlexaRequest(BaseRequest):
+class AlexaSkill(BaseSkill):
 
     BREAK = " <break /> "
 
     def __init__(self, event, user=None):
-        super(AlexaRequest, self).__init__(event, user)
+        super(AlexaSkill, self).__init__(event, user)
         self.event = event
         if user:
             self.user = user

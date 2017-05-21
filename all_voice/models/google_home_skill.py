@@ -1,15 +1,15 @@
 import logging
-from base_skill import BaseRequest
+from base_skill import BaseSkill
 
 log = logging.getLogger(__name__)
 
 
-class GoogleHomeRequest(BaseRequest):
+class GoogleHomeSkill(BaseSkill):
 
     DEFAULT_CONTEXT = "default"
 
     def __init__(self, event, user=None):
-        super(GoogleHomeRequest, self).__init__(event, user)
+        super(GoogleHomeSkill, self).__init__(event, user)
         self.event = event
         if user:
             self.user = user

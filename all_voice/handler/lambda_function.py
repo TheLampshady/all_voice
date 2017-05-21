@@ -1,5 +1,5 @@
-from all_voice.models import AlexaRequest
+from all_voice.models import AlexaSkill
 
 
 def lambda_handler(event, context={}):
-    return AlexaRequest(event=event).response()
+    return AlexaSkill(event=event).response()
