@@ -1,4 +1,5 @@
-from all_voice.models import GoogleHomeSkill, AllVoiceUser
+from all_voice.models import GoogleHomeSkill
+from all_voice.models.user import AllVoiceUser
 
 from tests.base import TestBaseIntent
 

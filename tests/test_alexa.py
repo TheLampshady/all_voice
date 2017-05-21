@@ -1,4 +1,5 @@
-from all_voice.models import AlexaSkill, AllVoiceUser
+from all_voice.models import AlexaSkill
+from all_voice.models.user import AllVoiceUser
 
 from tests.base import TestBaseIntent
 
