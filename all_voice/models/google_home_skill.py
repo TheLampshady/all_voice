@@ -71,3 +71,22 @@ class GoogleHomeSkill(BaseSkill):
             text='Launch',
             speech="Welcome!",
         )
+
+    def CancelIntent(self):
+        return self.build_response(
+            text='CancelIntent',
+            speech='goodbye'
+        )
+
+    def StopIntent(self):
+        return self.build_response(
+            text='Stop Intent',
+            speech='goodbye'
+        )
+
+    def HelpIntent(self):
+        return self.build_response(
+            text='Help Intent',
+            speech="Read the Manual.",
+            reprompt="R T F M"
+        )

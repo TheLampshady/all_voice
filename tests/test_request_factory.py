@@ -1,43 +1,78 @@
 from mock import patch
-from all_voice.models import AlexaSkill, BaseSkill, get_all_voice
-
+from all_voice.models import AlexaSkill
+from all_voice.models.all_voice import AllVoice
 
 from tests.base import TestBaseIntent
 
 
 class TestSkillFactory(TestBaseIntent):
 
+    def setUp(self):
+        class MockClass(AllVoice):
+            pass
+        self.MockClass = MockClass
+
     def test_get_skill_returns_alexa(self):
         event = self.get_mock_alexa_event()
 
-        class MockClass(BaseSkill): pass
-
-        skill = get_all_voice(MockClass, event)
-
+        skill = self.MockClass(event)
         self.assertIn("convert_to_ssml", dir(skill), "Skill did not extent Alexa")
-        self.assertNotIn("convert_to_ssml", dir(MockClass),
-                         "Skill was permanently updated.")
+        self.assertNotIn("DEFAULT_CONTEXT", dir(skill), "Skill extended google.")
 
     def test_get_skill_returns_google_home(self):
         event = self.get_mock_google_home_event()
 
-        class MockClass(BaseSkill): pass
-
-        skill = get_all_voice(MockClass, event)
+        skill = self.MockClass(event)
 
         self.assertIn("DEFAULT_CONTEXT", dir(skill), "Skill did not extent Google")
-        self.assertNotIn("DEFAULT_CONTEXT", dir(MockClass),
-                         "Skill was permanently updated.")
+        self.assertNotIn("convert_to_ssml", dir(skill), "Skill extented Alexa")
+
+    def test_get_skill_accesses_parent_class(self):
+        event = self.get_mock_alexa_event(intent="LaunchRequest")
+
+        skill = self.MockClass(event)
+        self.assertEqual(skill.intent_name, "LaunchRequest")
+
+        response = skill.response()
+        self.assertTrue(response.get("response"), "No Response returned")
 
     @patch.object(AlexaSkill, "CancelIntent")
-    def test_get_skill_accesses_parent_class(self, cancel_mock):
+    def test_all_voice_calls_parent(self, cancel_mock):
         event = self.get_mock_alexa_event(intent="CancelIntent")
         cancel_mock.return_value = {"test": 1}
-        class MockClass(BaseSkill):
-            def CancelIntent(self):
-                return super(type(self), self).CancelIntent()
 
-        response = get_all_voice(MockClass, event).response()
+        skill = self.MockClass(event)
+        response = skill.CancelIntent()
 
-        self.assertTrue(response.get("test"))
+        self.assertEqual(response.get("test"), 1)
         cancel_mock.assert_called_once()
+
+    @patch.object(AlexaSkill, "CancelIntent")
+    def test_all_voice_calls_super(self, cancel_mock):
+        event = self.get_mock_alexa_event(intent="CancelIntent")
+        cancel_mock.return_value = {"test": 1}
+
+        class MockClass(AllVoice):
+            def CancelIntent(self):
+                return super(AllVoice, self).CancelIntent()
+
+        skill = MockClass(event)
+        response = skill.CancelIntent()
+
+        self.assertEqual(response.get("test"), 1)
+        cancel_mock.assert_called_once()
+
+    @patch.object(AlexaSkill, "CancelIntent")
+    def test_all_voice_override(self, cancel_mock):
+        event = self.get_mock_alexa_event(intent="CancelIntent")
+        cancel_mock.return_value = {"test": 1}
+
+        class MockClass(AllVoice):
+            def CancelIntent(self):
+                return {"test": 2}
+
+        skill = MockClass(event)
+        response = skill.CancelIntent()
+
+        self.assertEqual(response.get("test"), 2)
+        cancel_mock.assert_not_called()
