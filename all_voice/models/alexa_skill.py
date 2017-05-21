@@ -10,7 +10,7 @@ class AlexaSkill(BaseSkill):
     BREAK = " <break /> "
 
     def __init__(self, event, user=None):
-        super(AlexaSkill, self).__init__(event, user)
+        super(AlexaSkill, self).__init__(event, user=None)
         self.event = event
         if user:
             self.user = user
