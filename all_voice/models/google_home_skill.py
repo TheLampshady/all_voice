@@ -9,6 +9,11 @@ class GoogleHomeSkill(BaseSkill):
     DEFAULT_CONTEXT = "default"
 
     def __init__(self, event, user=None):
+        """
+        Constructor for Google Home (API.AI) requests.
+        :param event: <dict> JSON
+        :param user: <BaseUser> User object
+        """
         super(GoogleHomeSkill, self).__init__(event, user)
         self.event = event
         if user:
@@ -18,21 +23,21 @@ class GoogleHomeSkill(BaseSkill):
 
         self.intent_name = result.get('action', "")
         self.parameters = result.get('parameters', {})
-        self.attributes = self.get_attributes(self.contexts)
+        self.attributes = self._get_attributes(self.contexts)
 
         try:
             self.user_id = self.event['originalRequest']['data']['user']['user_id']
         except (KeyError, TypeError) as e:
             self.user_id = ""
 
-    def get_attributes(self, contexts):
+    def _get_attributes(self, contexts):
         for context in contexts:
             if context.get("name", "") == self.DEFAULT_CONTEXT:
                 return context.get("parameters", {})
 
         return {}
 
-    def attributes_to_context(self):
+    def _attributes_to_context(self):
         return self.contexts + [{
             'name': self.DEFAULT_CONTEXT,
             'lifespan': 10,
@@ -47,7 +52,7 @@ class GoogleHomeSkill(BaseSkill):
                 'slack': {"text": speech}
             },
             source='default-webhook',
-            contextOut=self.attributes_to_context()
+            contextOut=self._attributes_to_context()
         )
         log.info(response)
         return response

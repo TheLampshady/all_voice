@@ -19,5 +19,3 @@ class AllVoice(BaseSkill):
 
         self.__class__.__bases__ += (skill_class,)
         super(AllVoice, self).__init__(event, user)
-
-
