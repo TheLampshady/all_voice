@@ -19,6 +19,22 @@ class TestSkillFactory(TestBaseIntent):
         self.assertIn("convert_to_ssml", dir(skill), "Skill did not extent Alexa")
         self.assertNotIn("DEFAULT_CONTEXT", dir(skill), "Skill extended google.")
 
+    def test_skill_classes_extension_is_temporary(self):
+        event = self.get_mock_alexa_event(intent="CancelIntent")
+        event2 = self.get_mock_google_home_event(intent="CancelIntent")
+
+        class MockClass(AllVoice):
+            def CancelIntent(self):
+                return super(AllVoice, self).CancelIntent()
+
+        skill = MockClass(event2)
+        skill.response()
+
+        skill = self.MockClass(event)
+        response = skill.response()
+        text = response['response']['outputSpeech']['ssml']
+        self.assertIn(AlexaSkill.CANCEL, text, "Intent was not called")
+
     def test_get_skill_returns_google_home(self):
         event = self.get_mock_google_home_event()
 

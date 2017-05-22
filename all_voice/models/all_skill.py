@@ -2,6 +2,8 @@ from base_skill import BaseSkill
 from alexa_skill import AlexaSkill
 from google_home_skill import GoogleHomeSkill
 
+from user import AllVoiceUser
+
 
 class AllVoice(BaseSkill):
     def __init__(self, event, user=None):
@@ -17,5 +19,10 @@ class AllVoice(BaseSkill):
         else:
             raise ValueError("Unknown Request Type")
 
-        self.__class__.__bases__ += (skill_class,)
-        super(AllVoice, self).__init__(event, user)
+        self.__class__ = type(
+            self.__class__.__name__,
+            (self.__class__, skill_class,),
+            dict(self.__dict__)
+        )
+        user = user or AllVoiceUser
+        skill_class.__init__(self, event, user)

@@ -8,6 +8,7 @@ log = logging.getLogger(__name__)
 class AlexaSkill(BaseSkill):
 
     BREAK = " <break /> "
+    CANCEL = "goodbye"
 
     def __init__(self, event, user=None):
         """
@@ -105,13 +106,13 @@ class AlexaSkill(BaseSkill):
     def CancelIntent(self):
         return self.build_response(
             text='CancelIntent',
-            speech='goodbye'
+            speech=self.CANCEL
         )
 
     def StopIntent(self):
         return self.build_response(
             text='Stop Intent',
-            speech='goodbye'
+            speech=self.CANCEL
         )
 
     def HelpIntent(self):
