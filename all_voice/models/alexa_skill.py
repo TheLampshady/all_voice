@@ -29,14 +29,15 @@ class AlexaSkill(BaseSkill):
 
         self.request_type = self.event['request'].get('type')
 
-    def build_response(self, speech, text, reprompt=None):
+    def build_response(self, speech, title=None, text=None, reprompt=None):
         response = dict(
             version='1.0',
             sessionAttributes=self.attributes,
             response=self.build_speechlet_response(
-                title=text,
                 response_text=speech,
-                reprompt_text=reprompt
+                reprompt_text=reprompt,
+                card_title=title or self.intent_name,
+                card_text=text or speech,
             ),
         )
         log.info(response)
@@ -50,7 +51,7 @@ class AlexaSkill(BaseSkill):
         text = "<speak>%s</speak>" % value.replace("&", "and")
         return text.replace(". ", self.BREAK).replace(", ", self.BREAK)
 
-    def build_speechlet_response(self, title, response_text, reprompt_text=None):
+    def build_speechlet_response(self, response_text, card_title, card_text, reprompt_text=None):
         output = dict(
             outputSpeech=dict(
                 type='SSML',
@@ -58,8 +59,8 @@ class AlexaSkill(BaseSkill):
             ),
             card=dict(
                 type='Simple',
-                title=title,
-                content=response_text,
+                title=card_title,
+                content=card_text,
             ),
             shouldEndSession=True,
         )

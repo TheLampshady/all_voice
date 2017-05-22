@@ -44,10 +44,10 @@ class GoogleHomeSkill(BaseSkill):
             'parameters': self.attributes
         }]
 
-    def build_response(self, speech, text, **kwargs):
+    def build_response(self, speech, text=None, **kwargs):
         response = dict(
             speech=speech,
-            displayText=text,
+            displayText=text or speech,
             data={
                 'slack': {"text": speech}
             },
