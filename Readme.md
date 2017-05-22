@@ -8,7 +8,6 @@ pip install git+https://github.com/TheLampshady/all_voice.git
 
 # Usage
 
-## Code Overview
 The AllVoice Base Skill allows a developer to extend a single class and inherit the functionality of
 the skill associated with the service making the call. By uses dynamic parenting from different 
 types of base skill (e.g. Alexa, Google Home) the request and response are handling implicitly while 
@@ -23,7 +22,7 @@ default case is added for API.AI
 *#TODO* Add Alexa yes support to handle context of the question being answered
 
 ## Creating a Skill
-Developers can create there skill by extending the AllVoice and adding their Intents as fucntions.
+Developers can create there skill by extending the AllVoice and adding their Intents as functions.
 ```python
 from all_voice.models import AllVoice
 
@@ -51,8 +50,24 @@ class TalkToMeSkill(AlexaSkill):
 
 
 ## User Objects
-USer object example
+User object example
 
+## Testing
+Developers can extend the unittest class and utils for generating JSON events fomr various services.
+```python
+import unittest
+from all_voice.tests.utils import AllVoiceTestUtils
+
+class TestBaseIntent(AllVoiceTestUtils, unittest.TestCase):
+
+    def setUp(self):
+        super(TestBaseIntent, self).setUp()
+```
+
+
+## Caveats
+Since the parents are dynamic, references to class fields / methods will be correct but IDEs will
+reference the unimplemented code and not the dynamic classes (Alexa / Google Home)
 
 ## Hosting
 Fulfillments can be hosted on various platforms with this library. 

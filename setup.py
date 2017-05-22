@@ -1,6 +1,7 @@
+from all_voice import __version__
 from setuptools import find_packages, setup
 
-version = "0.1.1"
+version = __version__
 
 setup(
     name='all_voice',
