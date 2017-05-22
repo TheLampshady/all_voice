@@ -1,5 +1,6 @@
 from time import sleep
-from all_voice.models.user import AllVoiceUser
+from all_voice.models import AllVoice
+from all_voice.models.user import AllVoiceUser, BaseUser
 from tests.base import TestBaseIntent
 
 
@@ -31,3 +32,14 @@ class TestUser(TestBaseIntent):
 
         self.assertEqual(len(AllVoiceUser._database), AllVoiceUser._db_limit)
         self.assertFalse(AllVoiceUser._database.get(5))
+
+    def test_initialize_with_user(self):
+        event = self.get_mock_alexa_event()
+        class UserClass(BaseUser):
+            pass
+
+        class MockClass(AllVoice):
+            pass
+
+        skill = MockClass(event, UserClass)
+        self.assertEqual(skill.user, UserClass, "User class was not updated")

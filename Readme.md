@@ -50,7 +50,20 @@ class TalkToMeSkill(AlexaSkill):
 
 
 ## User Objects
-User object example
+User objects are created by extending the `BaseUser` class. By default an AllVoice user provides 
+simple logging powered by a python dict. Do not rely on this for webhooks that scale.
+```python
+from all_voice.models import BaseUser
+
+class UserClass(BaseUser): pass
+```
+
+Once created, the class can be passes a a parameter to your skills init.
+```python
+def webhook(event):
+    skill = TalkToMeSkill(event, UserClass)
+```
+
 
 ## Testing
 Developers can extend the unittest class and utils for generating JSON events fomr various services.
