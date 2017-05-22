@@ -22,5 +22,5 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
     ],
-    keywords='alexa',
+    keywords='alexa, google home, api.ai, home',
 )
