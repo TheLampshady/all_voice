@@ -26,25 +26,37 @@ class BaseSkill(object):
         raise NotImplementedError("Not Implemented.")
 
     def log_error(self, error):
-        """Saves log to a User"""
-        raise NotImplementedError("Not Implemented.")
+        self.user.log_error(self.user_id, error)
 
     def get_error(self):
-        """Gets log from a User"""
-        raise NotImplementedError("Not Implemented.")
+        message = self.user.get_error(self.user_id)
+        return message or "Nothing is wrong"
 
     def LaunchRequest(self):
-        """Intent Required by some Services"""
-        raise NotImplementedError("Not Implemented.")
-
-    def HelpIntent(self):
-        """Intent Required by some Services"""
-        raise NotImplementedError("Not Implemented.")
+        return self.build_response(
+            text='Launch',
+            speech="Welcome!"
+        )
 
     def CancelIntent(self):
-        """Intent Required by some Services"""
-        raise NotImplementedError("Not Implemented.")
+        return self.build_response(
+            text='Cancel Intent',
+            speech="Cancel"
+        )
 
     def StopIntent(self):
-        """Intent Required by some Services"""
-        raise NotImplementedError("Not Implemented.")
+        return self.build_response(
+            text='Stop Intent',
+            speech="Cancel"
+        )
+
+    def HelpIntent(self):
+        return self.build_response(
+            text='Help Intent',
+            speech="Read the Manual.",
+            reprompt="R T F M"
+        )
+
+    def DiagnosticIntent(self):
+        speech_output = self.user_logger.get_error(self.user) or "Nothing is wrong"
+        return self.build_response(speech_output, title="Diagnostic")

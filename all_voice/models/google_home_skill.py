@@ -70,28 +70,3 @@ class GoogleHomeSkill(BaseSkill):
     def get_error(self):
         message = self.user.get_error(self.user_id)
         return message or "Nothing is wrong"
-
-    def LaunchRequest(self):
-        return self.build_response(
-            text='Launch',
-            speech="Welcome!",
-        )
-
-    def CancelIntent(self):
-        return self.build_response(
-            text='CancelIntent',
-            speech='goodbye'
-        )
-
-    def StopIntent(self):
-        return self.build_response(
-            text='Stop Intent',
-            speech='goodbye'
-        )
-
-    def HelpIntent(self):
-        return self.build_response(
-            text='Help Intent',
-            speech="Read the Manual.",
-            reprompt="R T F M"
-        )
