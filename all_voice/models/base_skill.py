@@ -18,7 +18,7 @@ class BaseSkill(object):
         self.user_id = NotImplemented
         self.intent_name = NotImplemented
 
-    def build_response(self, speech, text, reprompt=None):
+    def build_response(self, speech, reprompt=None, title=None, text=None):
         raise NotImplementedError("Not Implemented.")
 
     def response(self):
@@ -57,6 +57,11 @@ class BaseSkill(object):
             reprompt="R T F M"
         )
 
+    def _ErrorIntent(self):
+        speech = "There was an error with the intent: %s." % self.intent_name
+        reprompt = "Say Diagnostic for details."
+        return self.build_response(speech, reprompt, title='Error')
+
     def DiagnosticIntent(self):
-        speech_output = self.user_logger.get_error(self.user) or "Nothing is wrong"
+        speech_output = self.get_error() or "Nothing is wrong"
         return self.build_response(speech_output, title="Diagnostic")

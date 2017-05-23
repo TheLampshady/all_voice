@@ -29,11 +29,11 @@ class AlexaSkill(BaseSkill):
 
         self.request_type = self.event['request'].get('type')
 
-    def build_response(self, speech, title=None, text=None, reprompt=None):
+    def build_response(self, speech, reprompt=None, title=None, text=None):
         response = dict(
             version='1.0',
             sessionAttributes=self.attributes,
-            response=self.build_speechlet_response(
+            response=self._build_speech_response(
                 response_text=speech,
                 reprompt_text=reprompt,
                 card_title=title or self.intent_name,
@@ -51,7 +51,7 @@ class AlexaSkill(BaseSkill):
         text = "<speak>%s</speak>" % value.replace("&", "and")
         return text.replace(". ", self.BREAK).replace(", ", self.BREAK)
 
-    def build_speechlet_response(self, response_text, card_title, card_text, reprompt_text=None):
+    def _build_speech_response(self, response_text, card_title, card_text, reprompt_text=None):
         output = dict(
             outputSpeech=dict(
                 type='SSML',
@@ -78,15 +78,19 @@ class AlexaSkill(BaseSkill):
         return self.intent_name.replace('.', '_').replace('AMAZON_', '')
 
     def response(self):
-        if self.request_type == 'IntentRequest':
-            intent_name = self.clean_intent_name()
-            try:
-                return getattr(self, intent_name)()
-            except Exception as e:
-                log.exception(e)
-                raise e
-        elif self.request_type == "LaunchRequest":
-            return self.LaunchRequest()
-        return 'intentType: {r}'.format(r=self.request_type)
+        try:
+            if self.request_type == 'IntentRequest':
+                intent_name = self.clean_intent_name()
+                try:
+                    return getattr(self, intent_name)()
+                except Exception as e:
+                    log.exception(e)
+                    raise e
+            elif self.request_type == "LaunchRequest":
+                return self.LaunchRequest()
+            return 'intentType: {r}'.format(r=self.request_type)
+        except Exception as e:
+            self.log_error(e.message)
+            return self._ErrorIntent()
 
 
