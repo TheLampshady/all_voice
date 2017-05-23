@@ -26,6 +26,8 @@ class TestSkillFactory(TestBaseIntent):
         class MockClass(AllVoice):
             def CancelIntent(self):
                 return super(AllVoice, self).CancelIntent()
+            def NewIntent(self):
+                return super(AllVoice, self).CancelIntent()
 
         skill = MockClass(event2)
         skill.response()

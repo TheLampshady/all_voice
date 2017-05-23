@@ -21,8 +21,8 @@ class AllVoice(BaseSkill):
 
         self.__class__ = type(
             self.__class__.__name__,
-            (self.__class__, skill_class,),
-            dict(self.__dict__)
+            (AllVoice, skill_class,),
+            dict(self.__class__.__dict__)
         )
         user = user or AllVoiceUser
         skill_class.__init__(self, event, user)
