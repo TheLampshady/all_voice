@@ -46,7 +46,7 @@ class BaseSkill(object):
 
     def StopIntent(self):
         return self.build_response(
-            text='Stop Intent',
+            text='Stopped',
             speech="Good Bye!"
         )
 
