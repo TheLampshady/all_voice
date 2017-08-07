@@ -1,5 +1,5 @@
 import logging
-from base_skill import BaseSkill
+from .base_skill import BaseSkill
 
 log = logging.getLogger(__name__)
 

@@ -35,7 +35,7 @@ class TestSkillFactory(TestBaseIntent):
         skill = self.MockClass(event)
         response = skill.response()
         text = response['response']['outputSpeech']['ssml']
-        self.assertIn("Cancel", text, "Intent was not called")
+        self.assertIn("Good Bye!", text, "Intent was not called")
 
     def test_get_skill_returns_google_home(self):
         event = self.get_mock_google_home_event()

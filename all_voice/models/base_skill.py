@@ -40,21 +40,21 @@ class BaseSkill(object):
 
     def CancelIntent(self):
         return self.build_response(
-            text='Cancel Intent',
-            speech="Cancel"
+            text='Cancelled',
+            speech="Good Bye!"
         )
 
     def StopIntent(self):
         return self.build_response(
             text='Stop Intent',
-            speech="Cancel"
+            speech="Good Bye!"
         )
 
     def HelpIntent(self):
         return self.build_response(
             text='Help Intent',
             speech="Read the Manual.",
-            reprompt="R T F M"
+            reprompt="R T M"
         )
 
     def _ErrorIntent(self):

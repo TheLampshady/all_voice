@@ -1,5 +1,5 @@
 import logging
-from base_skill import BaseSkill
+from .base_skill import BaseSkill
 
 
 log = logging.getLogger(__name__)
@@ -29,14 +29,14 @@ class AlexaSkill(BaseSkill):
 
         self.request_type = self.event['request'].get('type')
 
-    def build_response(self, speech, reprompt=None, title=None, text=None):
+    def build_response(self, speech, reprompt=None, title="", text=None):
         response = dict(
             version='1.0',
             sessionAttributes=self.attributes,
             response=self._build_speech_response(
                 response_text=speech,
                 reprompt_text=reprompt,
-                card_title=title or self.intent_name,
+                card_title=title,
                 card_text=text or speech,
             ),
         )

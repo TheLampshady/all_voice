@@ -1,8 +1,8 @@
-from base_skill import BaseSkill
-from alexa_skill import AlexaSkill
-from google_home_skill import GoogleHomeSkill
+from .base_skill import BaseSkill
+from .alexa_skill import AlexaSkill
+from .google_home_skill import GoogleHomeSkill
 
-from user import AllVoiceUser
+from .user import AllVoiceUser
 
 
 class AllVoice(BaseSkill):
