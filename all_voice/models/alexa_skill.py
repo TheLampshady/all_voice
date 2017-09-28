@@ -7,8 +7,6 @@ log = logging.getLogger(__name__)
 
 class AlexaSkill(BaseSkill):
 
-    BREAK = " <break /> "
-
     def __init__(self, event, user=None):
         """
         Constructor for Amazon Alexa requests.
@@ -16,6 +14,7 @@ class AlexaSkill(BaseSkill):
         :param user: <BaseUser> User object
         """
         super(AlexaSkill, self).__init__(event, user=None)
+        self.skill_type = "Alexa"
         self.event = event
         if user:
             self.user = user
@@ -46,10 +45,6 @@ class AlexaSkill(BaseSkill):
     @staticmethod
     def slots_to_dict(slots):
         return {key: value.get('value') for key, value in slots.iteritems()}
-
-    def convert_to_ssml(self, value):
-        text = "<speak>%s</speak>" % value.replace("&", "and")
-        return text.replace(". ", self.BREAK).replace(", ", self.BREAK)
 
     def _build_speech_response(self, response_text, card_title, card_text, reprompt_text=None):
         output = dict(

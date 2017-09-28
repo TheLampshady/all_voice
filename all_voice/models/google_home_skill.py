@@ -8,14 +8,16 @@ class GoogleHomeSkill(BaseSkill):
 
     DEFAULT_CONTEXT = "default"
 
-    def __init__(self, event, user=None):
+    def __init__(self, event, user=None, ssml=True):
         """
         Constructor for Google Home (API.AI) requests.
         :param event: <dict> JSON
         :param user: <BaseUser> User object
         """
         super(GoogleHomeSkill, self).__init__(event, user)
+        self.skill_type = "APIAI"
         self.event = event
+        self.ssml = ssml
         if user:
             self.user = user
         result = self.event.get('result', {})
@@ -45,12 +47,21 @@ class GoogleHomeSkill(BaseSkill):
         }]
 
     def build_response(self, speech, text=None, **kwargs):
+        data = {
+            'slack': {"text": text or speech}
+        }
+        if self.ssml:
+            data['google'] = {
+                "expect_user_response": True,
+                "is_ssml": True,
+                "no_input_prompts": [
+                    [{'ssml': speech}]
+                ]
+            }
         response = dict(
             speech=speech,
             displayText=text or speech,
-            data={
-                'slack': {"text": speech}
-            },
+            data=data,
             source='default-webhook',
             contextOut=self._attributes_to_context()
         )

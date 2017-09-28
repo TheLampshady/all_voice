@@ -2,6 +2,7 @@ from all_voice.models.user import AllVoiceUser
 
 
 class BaseSkill(object):
+    BREAK = " <break /> "
 
     def __init__(self, *args, **kwargs):
         """
@@ -10,6 +11,7 @@ class BaseSkill(object):
         :param args:
         :param kwargs:
         """
+        self.skill_type = NotImplemented
         self.user = AllVoiceUser
         self.event = NotImplemented
         self.logger = NotImplemented
@@ -24,6 +26,10 @@ class BaseSkill(object):
     def response(self):
         """Main class for generating a response from the event"""
         raise NotImplementedError("Not Implemented.")
+
+    def convert_to_ssml(self, value):
+        text = "<speak>%s</speak>" % value.replace("&", "and")
+        return text.replace(". ", self.BREAK).replace(", ", self.BREAK)
 
     def log_error(self, error):
         self.user.log_error(self.user_id, error)

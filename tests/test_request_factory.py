@@ -42,8 +42,8 @@ class TestSkillFactory(TestBaseIntent):
 
         skill = self.MockClass(event)
 
-        self.assertIn("DEFAULT_CONTEXT", dir(skill), "Skill did not extent Google")
-        self.assertNotIn("convert_to_ssml", dir(skill), "Skill extented Alexa")
+        self.assertEquals(skill.skill_type, "APIAI", "Skill extented Alexa")
+        self.assertNotEquals(skill.skill_type, "Alexa", "Skill extented Alexa")
 
     def test_get_skill_accesses_parent_class(self):
         event = self.get_mock_alexa_event(intent="LaunchRequest")
