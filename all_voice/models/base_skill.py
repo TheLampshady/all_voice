@@ -40,19 +40,29 @@ class BaseSkill(object):
         :type parameters: dict
         :type lifespan: int
         """
-        if not lifespan:
+        if lifespan is None:
             old_context = self._contexts.get(name, {})
             lifespan = old_context.get("lifespan", self.DEFAULT_LIFESPAN)
-        self._contexts[name] = {
+        self._contexts[name.lower()] = {
             'parameters': parameters,
             'lifespan': lifespan
         }
 
     def remove_context(self, name):
-        self._contexts.pop(name)
+        """
+        Removes from context response
+        :type name: str
+        :return: dict
+        """
+        return self._contexts.pop(name.lower(), {})
 
     def get_context(self, name):
-        return self._contexts.get(name, {})
+        """
+        Gets context.
+        :type name:
+        :return: dict
+        """
+        return self._contexts.get(name.lower(), {})
 
     def log_error(self, error):
         self.user.log_error(self.user_id, error)
