@@ -6,7 +6,7 @@ log = logging.getLogger(__name__)
 
 class GoogleHomeSkill(BaseSkill):
 
-    DEFAULT_CONTEXT = "default"
+    DEFAULT_CONTEXT = "default_attributes"
 
     def __init__(self, event, user=None, ssml=True):
         """
@@ -52,6 +52,8 @@ class GoogleHomeSkill(BaseSkill):
         return context.get("parameters") or {}
 
     def _attributes_to_context(self):
+        self.add_context(self.DEFAULT_CONTEXT, self.attributes, 10)
+
         return [
             {
                 'name': key,
@@ -59,11 +61,7 @@ class GoogleHomeSkill(BaseSkill):
                 'parameters': value.get("parameters", {})
             }
             for key, value in self._contexts.items()
-        ] + [{
-            'name': self.DEFAULT_CONTEXT,
-            'lifespan': 10,
-            'parameters': self.attributes
-        }]
+        ]
 
     def build_response(self, speech, text=None, **data):
         """

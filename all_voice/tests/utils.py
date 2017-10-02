@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from models.google_home_skill import GoogleHomeSkill
 
 class AllVoiceTestUtils(object):
 
@@ -138,7 +138,7 @@ class AllVoiceTestUtils(object):
 
         if attributes:
             mock_event["result"]["contexts"].append({
-                "name": "default",
+                "name": GoogleHomeSkill.DEFAULT_CONTEXT,
                 "parameters": attributes,
                 "lifespan": 99
             })
