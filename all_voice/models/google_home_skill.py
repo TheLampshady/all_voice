@@ -48,11 +48,8 @@ class GoogleHomeSkill(BaseSkill):
             )
 
     def _get_attributes(self, contexts):
-        for context in contexts:
-            if context.get("name", "") == self.DEFAULT_CONTEXT:
-                return context.get("parameters", {})
-
-        return {}
+        context = contexts.get(self.DEFAULT_CONTEXT) or {}
+        return context.get("parameters") or {}
 
     def _attributes_to_context(self):
         return [

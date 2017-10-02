@@ -49,8 +49,17 @@ class AllVoiceTestUtils(object):
 
 
     @staticmethod
-    def get_mock_google_home_event(intent=None, session_id="SessionId.uuid", user_id="1", parameters=None, attributes=None):
+    def get_mock_google_home_event(
+        intent=None,
+        session_id="SessionId.uuid",
+        user_id="1",
+        parameters=None,
+        attributes=None,
+        contexts=None
+    ):
         now = datetime.now().isoformat()
+        if not contexts:
+            contexts = []
 
         original_request = {
             "source": "google",
@@ -102,6 +111,7 @@ class AllVoiceTestUtils(object):
                 "resolvedQuery": "what is happening today",
                 "actionIncomplete": False,
                 "metadata": meta_data,
+                "contexts": contexts,
                 "fulfillment": {
                     "speech": "",
                     "messages": [
@@ -127,13 +137,22 @@ class AllVoiceTestUtils(object):
             mock_event["result"]["parameters"] = parameters
 
         if attributes:
-            mock_event["result"]["contexts"] = [{
+            mock_event["result"]["contexts"].append({
                 "name": "default",
                 "parameters": attributes,
                 "lifespan": 99
-            }]
+            })
 
         return mock_event
+
+    def context_to_dict(self, result):
+        return {
+            context.get('name', ""): {
+                'lifespan': context.get('lifespan'),
+                'parameters': context.get('parameters')
+            }
+            for context in result.get('contextOut')
+        }
 
 
 class MockLogger(object):

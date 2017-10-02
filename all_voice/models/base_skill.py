@@ -43,7 +43,7 @@ class BaseSkill(object):
         self._contexts.pop(name)
 
     def get_context(self, name):
-        self._contexts.get(name, {})
+        return self._contexts.get(name, {})
 
     def log_error(self, error):
         self.user.log_error(self.user_id, error)
