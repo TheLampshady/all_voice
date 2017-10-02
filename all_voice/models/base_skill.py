@@ -41,8 +41,7 @@ class BaseSkill(object):
         :type lifespan: int
         """
         if lifespan is None:
-            old_context = self._contexts.get(name, {})
-            lifespan = old_context.get("lifespan", self.DEFAULT_LIFESPAN)
+            lifespan = self.DEFAULT_LIFESPAN
         self._contexts[name.lower()] = {
             'parameters': parameters,
             'lifespan': lifespan
