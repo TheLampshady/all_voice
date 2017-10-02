@@ -14,3 +14,16 @@ class TestAlexa(TestBaseIntent):
 
         self.assertEqual(skill.user_id, "user_id")
         self.assertEqual(skill.intent_name, "test")
+
+    def test_alexa_context(self):
+        event = self.get_mock_alexa_event(intent="test", user_id="mr-user")
+
+        skill = AlexaSkill(event)
+
+        skill.add_context("test", {"a": 1})
+
+        result = skill.build_response("context")
+        context_dict = result['sessionAttributes'].get('contextOut')
+        self.assertTrue(context_dict)
+        self.assertIn("test", context_dict)
+        self.assertIn("a", context_dict['test']['parameters'])

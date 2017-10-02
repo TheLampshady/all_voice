@@ -3,7 +3,7 @@ from datetime import datetime
 
 class AllVoiceTestUtils(object):
 
-    def get_mock_alexa_event(self, intent=None, session_id="SessionId.uuid", attributes=None, parameters=None):
+    def get_mock_alexa_event(self, intent=None, session_id="SessionId.uuid", user_id="user_id", attributes=None, parameters=None):
         mock_event = {
             "session": {
                 "sessionId": session_id,
@@ -11,7 +11,7 @@ class AllVoiceTestUtils(object):
                     "applicationId": "amzn1.ask.skill.1234"
                 },
                 "user": {
-                    "userId": "user_id"
+                    "userId": user_id
                 },
                 "new": False
             },

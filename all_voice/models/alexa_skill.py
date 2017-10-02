@@ -7,6 +7,8 @@ log = logging.getLogger(__name__)
 
 class AlexaSkill(BaseSkill):
 
+    DEFAULT_CONTEXT = "contextOut"
+
     def __init__(self, event, user=None):
         """
         Constructor for Amazon Alexa requests.
@@ -23,12 +25,17 @@ class AlexaSkill(BaseSkill):
 
         self.parameters = self.slots_to_dict(intent.get("slots", {}))
         self.attributes = session.get("attributes", {})
+        self._contexts = self.attributes.get(self.DEFAULT_CONTEXT, {})
         self.user_id = self.event['session']['user']['userId']
         self.intent_name = intent.get('name')
 
         self.request_type = self.event['request'].get('type')
 
+    def _save_context_to_attributes(self):
+        self.attributes[self.DEFAULT_CONTEXT] = self._contexts
+
     def build_response(self, speech, reprompt=None, title="", text=None):
+        self._save_context_to_attributes()
         response = dict(
             version='1.0',
             sessionAttributes=self.attributes,

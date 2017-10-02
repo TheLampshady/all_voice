@@ -18,19 +18,34 @@ class GoogleHomeSkill(BaseSkill):
         self.skill_type = "APIAI"
         self.event = event
         self.ssml = ssml
+        self._contexts = {}
+
         if user:
             self.user = user
         result = self.event.get('result', {})
-        self.contexts = result.get("contexts", [])
-
+        self._parse_context(result)
         self.intent_name = result.get('action', "")
         self.parameters = result.get('parameters', {})
-        self.attributes = self._get_attributes(self.contexts)
+        self.attributes = self._get_attributes(self._contexts)
 
         try:
             self.user_id = self.event['originalRequest']['data']['user']['user_id']
         except (KeyError, TypeError) as e:
             self.user_id = ""
+
+    def _parse_context(self, result):
+        """
+        Converts Request JSON to dict.
+        :param result:
+        :return:
+        """
+        contexts = result.get("contexts", [])
+        for context in contexts:
+            self.add_context(
+                context.get("name", ""),
+                context.get("parameters", {}),
+                context.get("lifespan", self.DEFAULT_LIFESPAN)
+            )
 
     def _get_attributes(self, contexts):
         for context in contexts:
@@ -40,16 +55,29 @@ class GoogleHomeSkill(BaseSkill):
         return {}
 
     def _attributes_to_context(self):
-        return self.contexts + [{
+        return [
+            {
+                'name': key,
+                'lifespan': value.get("lifespan", self.DEFAULT_LIFESPAN),
+                'parameters': value.get("parameters", {})
+            }
+            for key, value in self._contexts.items()
+        ] + [{
             'name': self.DEFAULT_CONTEXT,
             'lifespan': 10,
             'parameters': self.attributes
         }]
 
-    def build_response(self, speech, text=None, **kwargs):
-        data = {
-            'slack': {"text": text or speech}
-        }
+    def build_response(self, speech, text=None, **data):
+        """
+
+        :param speech: Test to speech to ssml
+        :param text: Display text to respond
+        :param data: key, property pairs for 3rd party responses
+        :return:
+        """
+        data['slack'] = {"text": text or speech}
+
         if self.ssml:
             data['google'] = {
                 "expect_user_response": True,

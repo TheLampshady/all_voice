@@ -3,6 +3,7 @@ from all_voice.models.user import AllVoiceUser
 
 class BaseSkill(object):
     BREAK = " <break /> "
+    DEFAULT_LIFESPAN = 5
 
     def __init__(self, *args, **kwargs):
         """
@@ -17,6 +18,7 @@ class BaseSkill(object):
         self.logger = NotImplemented
         self.parameters = NotImplemented
         self.attributes = NotImplemented
+        self._contexts = NotImplemented
         self.user_id = NotImplemented
         self.intent_name = NotImplemented
 
@@ -30,6 +32,18 @@ class BaseSkill(object):
     def convert_to_ssml(self, value):
         text = "<speak>%s</speak>" % value.replace("&", "and")
         return text.replace(". ", self.BREAK).replace(", ", self.BREAK)
+
+    def add_context(self, name, parameters, lifespan=5):
+        self._contexts[name] = {
+            'parameters': parameters,
+            'lifespan': lifespan
+        }
+
+    def remove_context(self, name):
+        self._contexts.pop(name)
+
+    def get_context(self, name):
+        self._contexts.get(name, {})
 
     def log_error(self, error):
         self.user.log_error(self.user_id, error)

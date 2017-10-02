@@ -16,8 +16,16 @@ class TestSkillFactory(TestBaseIntent):
         event = self.get_mock_alexa_event()
 
         skill = self.MockClass(event)
-        self.assertIn("convert_to_ssml", dir(skill), "Skill did not extent Alexa")
-        self.assertNotIn("DEFAULT_CONTEXT", dir(skill), "Skill extended google.")
+        self.assertEquals(skill.skill_type, "Alexa", "Skill did not extented Alexa")
+        self.assertNotEquals(skill.skill_type, "APIAI", "Skill extented Google")
+
+    def test_get_skill_returns_google_home(self):
+        event = self.get_mock_google_home_event()
+
+        skill = self.MockClass(event)
+
+        self.assertEquals(skill.skill_type, "APIAI", "Skill did not extented Google")
+        self.assertNotEquals(skill.skill_type, "Alexa", "Skill extented Alexa")
 
     def test_skill_classes_extension_is_temporary(self):
         event = self.get_mock_alexa_event(intent="CancelIntent")
@@ -36,14 +44,6 @@ class TestSkillFactory(TestBaseIntent):
         response = skill.response()
         text = response['response']['outputSpeech']['ssml']
         self.assertIn("Good Bye!", text, "Intent was not called")
-
-    def test_get_skill_returns_google_home(self):
-        event = self.get_mock_google_home_event()
-
-        skill = self.MockClass(event)
-
-        self.assertEquals(skill.skill_type, "APIAI", "Skill extented Alexa")
-        self.assertNotEquals(skill.skill_type, "Alexa", "Skill extented Alexa")
 
     def test_get_skill_accesses_parent_class(self):
         event = self.get_mock_alexa_event(intent="LaunchRequest")
