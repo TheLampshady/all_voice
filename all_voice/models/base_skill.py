@@ -33,7 +33,16 @@ class BaseSkill(object):
         text = "<speak>%s</speak>" % value.replace("&", "and")
         return text.replace(". ", self.BREAK).replace(", ", self.BREAK)
 
-    def add_context(self, name, parameters, lifespan=5):
+    def add_context(self, name, parameters, lifespan=None):
+        """
+        Adds context to response
+        :type name: str
+        :type parameters: dict
+        :type lifespan: int
+        """
+        if not lifespan:
+            old_context = self._contexts.get(name, {})
+            lifespan = old_context.get("lifespan", self.DEFAULT_LIFESPAN)
         self._contexts[name] = {
             'parameters': parameters,
             'lifespan': lifespan
