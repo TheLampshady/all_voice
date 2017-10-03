@@ -169,7 +169,7 @@ class AllVoiceTestUtils(object):
         }
 
     def get_attributes(self, result):
-        self.context_to_dict(result).get(DEFAULT_CONTEXT).get("parameters")
+        return self.context_to_dict(result).get(DEFAULT_CONTEXT).get("parameters")
 
     def get_context(self, result, name):
         return self.context_to_dict(result).get(name).get("parameters")
