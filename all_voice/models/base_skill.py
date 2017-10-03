@@ -22,7 +22,16 @@ class BaseSkill(object):
         self.user_id = NotImplemented
         self.intent_name = NotImplemented
 
-    def build_response(self, speech, reprompt=None, title=None, text=None):
+    def build_response(self, speech, reprompt=None, title=None, text=None, **data):
+        """
+        Takse results and formats for API response
+        :type speech: basestring or None
+        :type reprompt: basestring or None
+        :type title: basestring or None
+        :type text: basestring or None
+        :type data: dict
+        :rtype: dict
+        """
         raise NotImplementedError("Not Implemented.")
 
     def response(self):

@@ -1,10 +1,10 @@
 from datetime import datetime
-import unittest
+
 
 DEFAULT_CONTEXT = "default_attributes"
 
 
-class AllVoiceTestUtils(unittest.TestCase):
+class AllVoiceTestUtils(object):
 
     def get_mock_alexa_event(self, intent=None, session_id="SessionId.uuid", user_id="user_id", attributes=None, parameters=None):
         mock_event = {
@@ -60,6 +60,16 @@ class AllVoiceTestUtils(unittest.TestCase):
         attributes=None,
         contexts=None
     ):
+        """
+
+        :type intent: str or None
+        :type session_id: str or None
+        :type user_id: str or None
+        :type parameters: dict or None
+        :type attributes:  dict None
+        :type contexts:  list or None
+        :rtype: dict
+        """
         now = datetime.now().isoformat()
         if not contexts:
             contexts = []
@@ -148,7 +158,8 @@ class AllVoiceTestUtils(unittest.TestCase):
 
         return mock_event
 
-    def context_to_dict(self, result):
+    @staticmethod
+    def context_to_dict(result):
         return {
             context.get('name', ""): {
                 'lifespan': context.get('lifespan'),
