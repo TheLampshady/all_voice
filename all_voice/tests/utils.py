@@ -168,6 +168,12 @@ class AllVoiceTestUtils(object):
             for context in result.get('contextOut')
         }
 
+    def get_attributes(self, result):
+        self.context_to_dict(result).get(DEFAULT_CONTEXT).get("parameters")
+
+    def get_context(self, result, name):
+        return self.context_to_dict(result).get(name).get("parameters")
+
 
 class MockLogger(object):
     @classmethod
