@@ -1,7 +1,7 @@
 from datetime import datetime
 import unittest
 
-from models.google_home_skill import GoogleHomeSkill
+DEFAULT_CONTEXT = "default_attributes"
 
 
 class AllVoiceTestUtils(unittest.TestCase):
@@ -141,7 +141,7 @@ class AllVoiceTestUtils(unittest.TestCase):
 
         if attributes:
             mock_event["result"]["contexts"].append({
-                "name": GoogleHomeSkill.DEFAULT_CONTEXT,
+                "name": DEFAULT_CONTEXT,
                 "parameters": attributes,
                 "lifespan": 99
             })
