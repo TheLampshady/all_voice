@@ -51,7 +51,7 @@ class AlexaSkill(BaseSkill):
 
     @staticmethod
     def slots_to_dict(slots):
-        return {key: value.get('value') for key, value in slots.iteritems()}
+        return {key: value.get('value') for key, value in list(slots.items())}
 
     def _build_speech_response(self, response_text, card_title, card_text, reprompt_text=None):
         output = dict(
